@@ -2,17 +2,15 @@
 
 ## Execution Description
 
-Trains DistilBertForSequenceClassification in-process on synthetic token batches (fp32 AdamW). sequence_len, batch_size, num_iterations, model_name, learning_rate, and weight_decay come from yaml. dataset_name and optimizer are ignored. loss is hardcoded 1.0. Sweep dimensions: model_name, dataset_name, sequence_len, batch_size, optimizer, learning_rate, weight_decay, num_iterations.
+Trains DistilBertForSequenceClassification in-process on synthetic token batches (fp32 AdamW). sequence_len, batch_size, num_iterations, model_name, learning_rate, and weight_decay come from yaml. dataset_name and optimizer are ignored. loss is hardcoded 1.0. Sweep dimensions: model_name, sequence_len, batch_size, learning_rate, weight_decay, num_iterations.
 
 ## Parameters
 
 | Parameter | CLI Flag | Tested Values | Default | Description |
 | --- | --- | --- | --- | --- |
 | model_name | `--model-name` | smoke=distilbert-base-uncased, baseline=distilbert-base-uncased, extended=distilbert-base-uncased | distilbert-base-uncased | From Parameter list; see Execution Description With Parameters. |
-| dataset_name | `--dataset-name` | smoke=glue-sst2-synthetic, baseline=glue-sst2-synthetic, extended=glue-sst2-synthetic | glue-sst2-synthetic | From Parameter list; see Execution Description With Parameters. |
 | sequence_len | `--sequence-len` | smoke=32, baseline=128, extended=128 | 128 | From Parameter list; see Execution Description With Parameters. |
 | batch_size | `--batch-size` | smoke=2, baseline=16, extended=16 | 16 | From Parameter list; see Execution Description With Parameters. |
-| optimizer | `--optimizer` | smoke=adamw, baseline=adamw, extended=adamw | adamw | From Parameter list; see Execution Description With Parameters. |
 | learning_rate | `--learning-rate` | smoke=5e-05, baseline=5e-05, extended=5e-05 | 5e-05 | From Parameter list; see Execution Description With Parameters. |
 | weight_decay | `--weight-decay` | smoke=0.01, baseline=0.01, extended=0.01 | 0.01 | From Parameter list; see Execution Description With Parameters. |
 | num_iterations | `--num-iterations` | smoke=2, baseline=17300, extended=50900 | 17300 | From Parameter list; see Execution Description With Parameters. |

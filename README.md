@@ -85,7 +85,7 @@ Three operator scripts from [`garys-gpu-benchmarks/gpu-bench-suite`](https://git
 
 ## 1. Overview
 
-Trains DistilBertForSequenceClassification in-process on synthetic token batches (fp32 AdamW). sequence_len, batch_size, num_iterations, model_name, learning_rate, and weight_decay come from yaml. dataset_name and optimizer are ignored. loss is hardcoded 1.0. Sweep dimensions: model_name, dataset_name, sequence_len, batch_size, optimizer, learning_rate, weight_decay, num_iterations.
+Trains DistilBertForSequenceClassification in-process on synthetic token batches (fp32 AdamW). sequence_len, batch_size, num_iterations, model_name, learning_rate, and weight_decay come from yaml. dataset_name and optimizer are ignored. loss is hardcoded 1.0. Sweep dimensions: model_name, sequence_len, batch_size, learning_rate, weight_decay, num_iterations.
 
 ## 2. What It Validates
 

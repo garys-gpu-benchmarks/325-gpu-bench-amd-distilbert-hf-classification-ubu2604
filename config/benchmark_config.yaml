@@ -9,7 +9,6 @@
 sweep:
   profile: smoke
   model_name: distilbert-base-uncased
-  dataset_name: glue-sst2-synthetic
   sequence_len:
     smoke: 32
     baseline: 128
@@ -18,7 +17,6 @@ sweep:
     smoke: 2
     baseline: 16
     extended: 16
-  optimizer: adamw
   learning_rate: 5e-05
   weight_decay: 0.01
   num_iterations:

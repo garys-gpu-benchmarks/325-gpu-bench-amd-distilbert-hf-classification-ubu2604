@@ -46,10 +46,8 @@ Validation and logging:
 
 Workload options:
   --model-name <value>            Override model_name
-  --dataset-name <value>            Override dataset_name
   --sequence-len <value>            Override sequence_len
   --batch-size <value>            Override batch_size
-  --optimizer <value>            Override optimizer
   --learning-rate <value>            Override learning_rate
   --weight-decay <value>            Override weight_decay
   --num-iterations <value>            Override num_iterations
@@ -87,10 +85,8 @@ LOG_LEVEL_VALUE="INFO"
 OUTPUT_FORMAT=""
 SAVE_OPTIONS_FILE=""
 MODEL_NAME=""
-DATASET_NAME=""
 SEQUENCE_LEN=""
 BATCH_SIZE=""
-OPTIMIZER=""
 LEARNING_RATE=""
 WEIGHT_DECAY=""
 NUM_ITERATIONS=""
@@ -115,10 +111,8 @@ while [[ $# -gt 0 ]]; do
     --output-format) OUTPUT_FORMAT="${2:-}"; shift 2 ;;
     --save-options-file) SAVE_OPTIONS_FILE="${2:-}"; shift 2 ;;
     --model-name) MODEL_NAME="${2:-}"; shift 2 ;;
-    --dataset-name) DATASET_NAME="${2:-}"; shift 2 ;;
     --sequence-len) SEQUENCE_LEN="${2:-}"; shift 2 ;;
     --batch-size) BATCH_SIZE="${2:-}"; shift 2 ;;
-    --optimizer) OPTIMIZER="${2:-}"; shift 2 ;;
     --learning-rate) LEARNING_RATE="${2:-}"; shift 2 ;;
     --weight-decay) WEIGHT_DECAY="${2:-}"; shift 2 ;;
     --num-iterations) NUM_ITERATIONS="${2:-}"; shift 2 ;;
@@ -161,10 +155,8 @@ PY
 }
 
 MODEL_NAME="${MODEL_NAME:-$(yaml_get model_name)}"
-DATASET_NAME="${DATASET_NAME:-$(yaml_get dataset_name)}"
 SEQUENCE_LEN="${SEQUENCE_LEN:-$(yaml_get sequence_len)}"
 BATCH_SIZE="${BATCH_SIZE:-$(yaml_get batch_size)}"
-OPTIMIZER="${OPTIMIZER:-$(yaml_get optimizer)}"
 LEARNING_RATE="${LEARNING_RATE:-$(yaml_get learning_rate)}"
 WEIGHT_DECAY="${WEIGHT_DECAY:-$(yaml_get weight_decay)}"
 NUM_ITERATIONS="${NUM_ITERATIONS:-$(yaml_get num_iterations)}"
@@ -174,10 +166,8 @@ OUTPUT_FORMAT="${OUTPUT_FORMAT:-csv}"
 BENCHMARK_RUN_COMMAND="bash run_benchmark.sh --${PROFILE}"
 [[ "${VALIDATE}" -eq 1 ]] && BENCHMARK_RUN_COMMAND+=" --validate"
 [[ -n "${MODEL_NAME}" ]] && BENCHMARK_RUN_COMMAND+=" --model-name $(printf %q "${MODEL_NAME}")"
-[[ -n "${DATASET_NAME}" ]] && BENCHMARK_RUN_COMMAND+=" --dataset-name $(printf %q "${DATASET_NAME}")"
 [[ -n "${SEQUENCE_LEN}" ]] && BENCHMARK_RUN_COMMAND+=" --sequence-len $(printf %q "${SEQUENCE_LEN}")"
 [[ -n "${BATCH_SIZE}" ]] && BENCHMARK_RUN_COMMAND+=" --batch-size $(printf %q "${BATCH_SIZE}")"
-[[ -n "${OPTIMIZER}" ]] && BENCHMARK_RUN_COMMAND+=" --optimizer $(printf %q "${OPTIMIZER}")"
 [[ -n "${LEARNING_RATE}" ]] && BENCHMARK_RUN_COMMAND+=" --learning-rate $(printf %q "${LEARNING_RATE}")"
 [[ -n "${WEIGHT_DECAY}" ]] && BENCHMARK_RUN_COMMAND+=" --weight-decay $(printf %q "${WEIGHT_DECAY}")"
 [[ -n "${NUM_ITERATIONS}" ]] && BENCHMARK_RUN_COMMAND+=" --num-iterations $(printf %q "${NUM_ITERATIONS}")"
@@ -224,10 +214,8 @@ run_collection() {
   fi
   grep -q -- '--output-format' <<<"${help}" && collect_args+=(--output-format "${OUTPUT_FORMAT}")
   grep -q -- '--model-name' <<<"${help}" && collect_args+=(--model-name "${MODEL_NAME}")
-  grep -q -- '--dataset-name' <<<"${help}" && collect_args+=(--dataset-name "${DATASET_NAME}")
   grep -q -- '--sequence-len' <<<"${help}" && collect_args+=(--sequence-len "${SEQUENCE_LEN}")
   grep -q -- '--batch-size' <<<"${help}" && collect_args+=(--batch-size "${BATCH_SIZE}")
-  grep -q -- '--optimizer' <<<"${help}" && collect_args+=(--optimizer "${OPTIMIZER}")
   grep -q -- '--learning-rate' <<<"${help}" && collect_args+=(--learning-rate "${LEARNING_RATE}")
   grep -q -- '--weight-decay' <<<"${help}" && collect_args+=(--weight-decay "${WEIGHT_DECAY}")
   grep -q -- '--num-iterations' <<<"${help}" && collect_args+=(--num-iterations "${NUM_ITERATIONS}")
