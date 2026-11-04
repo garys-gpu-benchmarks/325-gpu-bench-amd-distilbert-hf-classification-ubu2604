@@ -2,7 +2,7 @@
 
 ## Execution Description
 
-Trains DistilBertForSequenceClassification in-process on synthetic token batches (fp32 AdamW). sequence_len, batch_size, num_iterations, model_name, learning_rate, and weight_decay come from yaml. dataset_name and optimizer are ignored. loss is hardcoded 1.0. Sweep dimensions: model_name, sequence_len, batch_size, learning_rate, weight_decay, num_iterations.
+Trains DistilBertForSequenceClassification in-process on synthetic token batches (fp32 AdamW). sequence_len, batch_size, num_iterations, model_name, learning_rate, and weight_decay come from yaml. warmup_iters: untimed forward/backward passes before the timer starts. gradient_accumulation: backward passes per optimizer step. Sweep dimensions: model_name, sequence_len, batch_size, learning_rate, weight_decay, num_iterations, gradient_accumulation, warmup_iters.
 
 ## Parameters
 
@@ -14,6 +14,8 @@ Trains DistilBertForSequenceClassification in-process on synthetic token batches
 | learning_rate | `--learning-rate` | smoke=5e-05, baseline=5e-05, extended=5e-05 | 5e-05 | From Parameter list; see Execution Description With Parameters. |
 | weight_decay | `--weight-decay` | smoke=0.01, baseline=0.01, extended=0.01 | 0.01 | From Parameter list; see Execution Description With Parameters. |
 | num_iterations | `--num-iterations` | smoke=2, baseline=17300, extended=50900 | 17300 | From Parameter list; see Execution Description With Parameters. |
+| gradient_accumulation | `--gradient-accumulation` | smoke=1, baseline=1, extended=1 | 1 | From Parameter list; see Execution Description With Parameters. |
+| warmup_iters | `--warmup-iters` | smoke=1, baseline=2, extended=5 | 2 | From Parameter list; see Execution Description With Parameters. |
 
 ## Invocation
 
@@ -37,7 +39,7 @@ sample_index,step,loss,samples_per_sec,step_time_ms,tokens_per_sec,peak_gpu_memo
 
 ## Framework
 
-Trains DistilBertForSequenceClassification in-process on synthetic token batches (fp32 AdamW). sequence_len, batch_size, num_iterations, model_name, learning_rate, and weight_decay come from yaml. dataset_name and optimizer are ignored.
+Trains DistilBertForSequenceClassification in-process on synthetic token batches (fp32 AdamW). sequence_len, batch_size, num_iterations, model_name, learning_rate, and weight_decay come from yaml. warmup_iters: untimed forward/backward passes before the timer starts.
 
 ## Installation and Execution Summary
 
@@ -97,10 +99,10 @@ bash run_benchmark.sh --profile extended --validate
 2. `run.error_message` is NULL.
 3. `started_at` and `finished_at` are valid ISO-8601 UTC strings.
 4. All required aggregate metrics in `runs` are non-NULL and finite.
-5. All required aggregate metrics are physically sensible (positive values). Trains DistilBertForSequenceClassification in-process on synthetic token batches (fp32 AdamW). sequence_len, batch_size, num_iterations, model_name, learning_rate, and weight_decay come from yaml. dataset_name and optimizer are ignored.
+5. All required aggregate metrics are physically sensible (positive values). Trains DistilBertForSequenceClassification in-process on synthetic token batches (fp32 AdamW). sequence_len, batch_size, num_iterations, model_name, learning_rate, and weight_decay come from yaml. warmup_iters: untimed forward/backward passes before the timer starts.
 6. At least 2 sample rows exist for the latest `run_id` (sweep coverage).
 7. No sample has `status = 'error'`.
-8. Trains DistilBertForSequenceClassification in-process on synthetic token batches (fp32 AdamW). sequence_len, batch_size, num_iterations, model_name, learning_rate, and weight_decay come from yaml. dataset_name and optimizer are ignored.
+8. Trains DistilBertForSequenceClassification in-process on synthetic token batches (fp32 AdamW). sequence_len, batch_size, num_iterations, model_name, learning_rate, and weight_decay come from yaml. warmup_iters: untimed forward/backward passes before the timer starts.
 
 ### Baseline / Threshold configuration (`config/benchmark_config.yaml`)
 

@@ -51,6 +51,8 @@ Workload options:
   --learning-rate <value>            Override learning_rate
   --weight-decay <value>            Override weight_decay
   --num-iterations <value>            Override num_iterations
+  --gradient-accumulation <value>            Override gradient_accumulation
+  --warmup-iters <value>            Override warmup_iters
 
 Information:
   --specification               Print this workload's specification and exit
@@ -90,6 +92,8 @@ BATCH_SIZE=""
 LEARNING_RATE=""
 WEIGHT_DECAY=""
 NUM_ITERATIONS=""
+GRADIENT_ACCUMULATION=""
+WARMUP_ITERS=""
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -116,6 +120,8 @@ while [[ $# -gt 0 ]]; do
     --learning-rate) LEARNING_RATE="${2:-}"; shift 2 ;;
     --weight-decay) WEIGHT_DECAY="${2:-}"; shift 2 ;;
     --num-iterations) NUM_ITERATIONS="${2:-}"; shift 2 ;;
+    --gradient-accumulation) GRADIENT_ACCUMULATION="${2:-}"; shift 2 ;;
+    --warmup-iters) WARMUP_ITERS="${2:-}"; shift 2 ;;
     --help|--specification|--matrix-definition) shift ;;
     *) die "Unknown option: $1" ;;
   esac
@@ -160,6 +166,8 @@ BATCH_SIZE="${BATCH_SIZE:-$(yaml_get batch_size)}"
 LEARNING_RATE="${LEARNING_RATE:-$(yaml_get learning_rate)}"
 WEIGHT_DECAY="${WEIGHT_DECAY:-$(yaml_get weight_decay)}"
 NUM_ITERATIONS="${NUM_ITERATIONS:-$(yaml_get num_iterations)}"
+GRADIENT_ACCUMULATION="${GRADIENT_ACCUMULATION:-$(yaml_get gradient_accumulation)}"
+WARMUP_ITERS="${WARMUP_ITERS:-$(yaml_get warmup_iters)}"
 OUTPUT_FORMAT="${OUTPUT_FORMAT:-$(yaml_get output_format)}"
 OUTPUT_FORMAT="${OUTPUT_FORMAT:-csv}"
 
@@ -171,6 +179,8 @@ BENCHMARK_RUN_COMMAND="bash run_benchmark.sh --${PROFILE}"
 [[ -n "${LEARNING_RATE}" ]] && BENCHMARK_RUN_COMMAND+=" --learning-rate $(printf %q "${LEARNING_RATE}")"
 [[ -n "${WEIGHT_DECAY}" ]] && BENCHMARK_RUN_COMMAND+=" --weight-decay $(printf %q "${WEIGHT_DECAY}")"
 [[ -n "${NUM_ITERATIONS}" ]] && BENCHMARK_RUN_COMMAND+=" --num-iterations $(printf %q "${NUM_ITERATIONS}")"
+[[ -n "${GRADIENT_ACCUMULATION}" ]] && BENCHMARK_RUN_COMMAND+=" --gradient-accumulation $(printf %q "${GRADIENT_ACCUMULATION}")"
+[[ -n "${WARMUP_ITERS}" ]] && BENCHMARK_RUN_COMMAND+=" --warmup-iters $(printf %q "${WARMUP_ITERS}")"
 set_benchmark_run_command "${BENCHMARK_RUN_COMMAND}"
 
 HOSTNAME_VALUE="$(hostname -s 2>/dev/null || hostname)"
@@ -219,6 +229,8 @@ run_collection() {
   grep -q -- '--learning-rate' <<<"${help}" && collect_args+=(--learning-rate "${LEARNING_RATE}")
   grep -q -- '--weight-decay' <<<"${help}" && collect_args+=(--weight-decay "${WEIGHT_DECAY}")
   grep -q -- '--num-iterations' <<<"${help}" && collect_args+=(--num-iterations "${NUM_ITERATIONS}")
+  grep -q -- '--gradient-accumulation' <<<"${help}" && collect_args+=(--gradient-accumulation "${GRADIENT_ACCUMULATION}")
+  grep -q -- '--warmup-iters' <<<"${help}" && collect_args+=(--warmup-iters "${WARMUP_ITERS}")
 
   printf -v collect_cmd '%q ' "${PYTHON_BIN}" scripts/collect_workload.py "${collect_args[@]}"
   echo "[RUN] ${collect_cmd}"

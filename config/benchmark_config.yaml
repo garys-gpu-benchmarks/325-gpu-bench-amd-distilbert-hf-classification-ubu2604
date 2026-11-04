@@ -23,3 +23,8 @@ sweep:
     smoke: 2
     baseline: 17300
     extended: 50900
+  gradient_accumulation: 1
+  warmup_iters:
+    smoke: 1
+    baseline: 2
+    extended: 5

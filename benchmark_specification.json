@@ -25,6 +25,11 @@
     "value": "gpu-bench-amd-distilbert-hf-classification-ubu2604"
   },
   {
+    "field_name": "Repo Directory Name",
+    "source_file": "BenchmarkSpecDefinitions.xlsx::Workload_Definitions",
+    "value": "325-gpu-bench-amd-distilbert-hf-classification-ubu2604"
+  },
+  {
     "field_name": "Main Goal",
     "source_file": "BenchmarkSpecDefinitions.xlsx::Workload_Definitions",
     "value": "Measure DistilBERT classification training throughput"
@@ -57,7 +62,7 @@
   {
     "field_name": "Execution Description With Parameters",
     "source_file": "BenchmarkSpecDefinitions.xlsx::Workload_Definitions",
-    "value": "Trains DistilBertForSequenceClassification in-process on synthetic token batches (fp32 AdamW). sequence_len, batch_size, num_iterations, model_name, learning_rate, and weight_decay come from yaml. dataset_name and optimizer are ignored. loss is hardcoded 1.0. This is not pytest test_bench.py. output_format: csv"
+    "value": "Trains DistilBertForSequenceClassification in-process on synthetic token batches (fp32 AdamW). sequence_len, batch_size, num_iterations, model_name, learning_rate, and weight_decay come from yaml. warmup_iters: untimed forward/backward passes before the timer starts. gradient_accumulation: backward passes per optimizer step. dataset_name and optimizer are ignored. loss is hardcoded 1.0. This is not pytest test_bench.py. output_format: csv"
   },
   {
     "field_name": "Execution Domain",
@@ -102,17 +107,17 @@
   {
     "field_name": "run_benchmark Command Plus Options for Smoke Run",
     "source_file": "BenchmarkSpecDefinitions.xlsx::Workload_Definitions",
-    "value": "bash run_benchmark.sh --smoke --validate --model-name distilbert-base-uncased --sequence-len 32 --batch-size 2 --learning-rate 5e-05 --weight-decay 0.01 --num-iterations 2"
+    "value": "bash run_benchmark.sh --smoke --validate --model-name distilbert-base-uncased --sequence-len 32 --batch-size 2 --learning-rate 5e-05 --weight-decay 0.01 --num-iterations 2 --gradient-accumulation 1 --warmup-iters 1"
   },
   {
     "field_name": "run_benchmark Command Plus Options for Baseline Run",
     "source_file": "BenchmarkSpecDefinitions.xlsx::Workload_Definitions",
-    "value": "bash run_benchmark.sh --baseline --validate --model-name distilbert-base-uncased --sequence-len 128 --batch-size 16 --learning-rate 5e-05 --weight-decay 0.01 --num-iterations 17300"
+    "value": "bash run_benchmark.sh --baseline --validate --model-name distilbert-base-uncased --sequence-len 128 --batch-size 16 --learning-rate 5e-05 --weight-decay 0.01 --num-iterations 17300 --gradient-accumulation 1 --warmup-iters 2"
   },
   {
     "field_name": "run_benchmark Command Plus Options for Extended Run",
     "source_file": "BenchmarkSpecDefinitions.xlsx::Workload_Definitions",
-    "value": "bash run_benchmark.sh --extended --validate --model-name distilbert-base-uncased --sequence-len 128 --batch-size 16 --learning-rate 5e-05 --weight-decay 0.01 --num-iterations 50900"
+    "value": "bash run_benchmark.sh --extended --validate --model-name distilbert-base-uncased --sequence-len 128 --batch-size 16 --learning-rate 5e-05 --weight-decay 0.01 --num-iterations 50900 --gradient-accumulation 1 --warmup-iters 5"
   },
   {
     "field_name": "Output Fields / Metrics to Parse",
@@ -257,12 +262,12 @@
   {
     "field_name": "Parameter_07",
     "source_file": "BenchmarkSpecDefinitions.xlsx::Workload_Definitions",
-    "value": "-"
+    "value": "gradient_accumulation"
   },
   {
     "field_name": "Parameter_08",
     "source_file": "BenchmarkSpecDefinitions.xlsx::Workload_Definitions",
-    "value": "-"
+    "value": "warmup_iters"
   },
   {
     "field_name": "Parameter_09",
@@ -407,7 +412,7 @@
   {
     "field_name": "Profile Parameter Values",
     "source_file": "BenchmarkSpecDefinitions.xlsx::Parameters_SmokeBaselineExtend",
-    "value": "{\"model_name\": {\"smoke\": \"distilbert-base-uncased\", \"baseline\": \"distilbert-base-uncased\", \"extended\": \"distilbert-base-uncased\", \"notes\": \"\"}, \"sequence_len\": {\"smoke\": \"32\", \"baseline\": \"128\", \"extended\": \"128\", \"notes\": \"Largest existing sequence_len. 3-4 min not reachable; trainer ignores extra ProfileValues knobs for step count.\"}, \"batch_size\": {\"smoke\": \"2\", \"baseline\": \"16\", \"extended\": \"16\", \"notes\": \"VM 2026-08-16 batch_size=16 sequence_len=128 -> 9s. Step count is hardcoded (baseline 10 / extended 30) in src/distilbert_train.py, not a ProfileValues knob. 3-4 min / 9-11 min not reachable.\"}, \"learning_rate\": {\"smoke\": \"5e-05\", \"baseline\": \"5e-05\", \"extended\": \"5e-05\", \"notes\": \"\"}, \"weight_decay\": {\"smoke\": \"0.01\", \"baseline\": \"0.01\", \"extended\": \"0.01\", \"notes\": \"\"}, \"num_iterations\": {\"smoke\": \"2\", \"baseline\": \"17300\", \"extended\": \"50900\", \"notes\": \"2026-08-18 retune: baseline>=3min / extended>=10min or extended~15min; NVIDIA copied from AMD. 2026-08-18: 125 steps from measured 11.4ms/step; 131 prompts=24 for 3 waves.\"}}"
+    "value": "{\"model_name\": {\"smoke\": \"distilbert-base-uncased\", \"baseline\": \"distilbert-base-uncased\", \"extended\": \"distilbert-base-uncased\", \"notes\": \"\"}, \"sequence_len\": {\"smoke\": \"32\", \"baseline\": \"128\", \"extended\": \"128\", \"notes\": \"Largest existing sequence_len. 3-4 min not reachable; trainer ignores extra ProfileValues knobs for step count.\"}, \"batch_size\": {\"smoke\": \"2\", \"baseline\": \"16\", \"extended\": \"16\", \"notes\": \"VM 2026-08-16 batch_size=16 sequence_len=128 -> 9s. Step count is hardcoded (baseline 10 / extended 30) in src/distilbert_train.py, not a ProfileValues knob. 3-4 min / 9-11 min not reachable.\"}, \"learning_rate\": {\"smoke\": \"5e-05\", \"baseline\": \"5e-05\", \"extended\": \"5e-05\", \"notes\": \"\"}, \"weight_decay\": {\"smoke\": \"0.01\", \"baseline\": \"0.01\", \"extended\": \"0.01\", \"notes\": \"\"}, \"num_iterations\": {\"smoke\": \"2\", \"baseline\": \"17300\", \"extended\": \"50900\", \"notes\": \"2026-08-18 retune: baseline>=3min / extended>=10min or extended~15min; NVIDIA copied from AMD. 2026-08-18: 125 steps from measured 11.4ms/step; 131 prompts=24 for 3 waves.\"}, \"gradient_accumulation\": {\"smoke\": \"1\", \"baseline\": \"1\", \"extended\": \"1\", \"notes\": \"\"}, \"warmup_iters\": {\"smoke\": \"1\", \"baseline\": \"2\", \"extended\": \"5\", \"notes\": \"\"}}"
   },
   {
     "field_name": "Profile Command Authorship",
