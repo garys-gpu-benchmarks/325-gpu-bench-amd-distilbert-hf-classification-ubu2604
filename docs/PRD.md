@@ -15,7 +15,7 @@ This PRD.md section is populated from benchmark_specification.json, which is the
 DistilBERT NLP Training Baseline
 
 ## Execution Summary (Run and Measure)
-Run inline Hugging Face DistilBERT sequence-classification training on synthetic token batches with yaml sequence_len, batch_size, and num_iterations, then write samples/s, step time, and tokens/s, to measure DistilBERT training throughput. This is not pytest test_bench.py
+Run inline Hugging Face DistilBERT sequence-classification training on synthetic token batches with yaml sequence_len, batch_size, and num_iterations, then write samples/s, step time, and tokens/s, to measure DistilBERT training throughput
 
 ## Main Goal
 Measure DistilBERT classification training throughput
