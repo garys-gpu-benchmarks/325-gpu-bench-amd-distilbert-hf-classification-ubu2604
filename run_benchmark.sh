@@ -19,9 +19,9 @@ usage() {
 
 Usage: bash run_benchmark.sh [OPTIONS]
 
-Workload Name:          DistilBERT NLP Training Baseline.
-Main Goal:              Measure DistilBERT classification training throughput.
-Command Tools Executed: Run inline DistilBertForSequenceClassification training on synthetic tokens.
+Workload Name:          DistilBERT NLP Training Baseline
+Main Goal:              Measure DistilBERT classification training throughput
+Command Tools Executed: Run inline DistilBertForSequenceClassification training on synthetic tokens
 
 Profiles (default: --smoke):
   --smoke                       Run smoke profile
