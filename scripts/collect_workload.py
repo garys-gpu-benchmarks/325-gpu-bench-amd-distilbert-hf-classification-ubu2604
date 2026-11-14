@@ -22,6 +22,26 @@ os.environ.setdefault("TRANSFORMERS_VERBOSITY", "error")
 CLASSIFIER_HEAD = ("pre_classifier.", "classifier.")
 
 
+def mark_measure_start() -> None:
+    """Setup ends here: record when the timed work starts (TEMPLATE_00_141).
+
+    run_benchmark.sh reads BENCHMARK_MEASURE_START_FILE when the benchmark stops and
+    starts the benchmark clock at this time, so model load and warmup count as setup.
+    The first call of a run wins. Outside run_benchmark.sh it does nothing.
+    """
+    import os
+    import time
+
+    path = os.environ.get("BENCHMARK_MEASURE_START_FILE", "")
+    if not path or os.path.exists(path):
+        return
+    try:
+        with open(path, "w", encoding="utf-8") as handle:
+            handle.write(f"{time.time_ns()}\n")
+    except OSError:
+        pass
+
+
 def warn_missing_weights(name: str, loading: dict) -> None:
     """The hidden load report would also hide body weights missing from the
     checkpoint (randomly initialized); name those, but not the classifier head."""
@@ -123,6 +143,7 @@ def main() -> int:
         # Peak memory covers the training steps, not the model load.
         torch.cuda.synchronize()
         torch.cuda.reset_peak_memory_stats()
+    mark_measure_start()  # setup ends: model loaded, warmup done
     print(f"[INFO] distilbert: warmup_iters={warmup} gradient_accumulation={accum} num_iterations={iters}", flush=True)
     start = time.perf_counter()
     opt.zero_grad(set_to_none=True)
